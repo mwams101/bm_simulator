@@ -1,0 +1,19 @@
+# Test your FastAPI endpoints
+
+POST http://127.0.0.1:8000/users
+Content-Type: application/json
+
+{
+  "user_id":1,
+  "user_name":"kali" ,
+  "email": "kali@gmail.com",
+  "password": "12345678",
+  "role": "admin"
+}
+
+###
+
+GET http://127.0.0.1:8000/hello/User
+Accept: application/json
+
+###
