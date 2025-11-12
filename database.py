@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./bm_simulator.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./bm_simulator.sqlite"
 
 # `check_same_thread=False` is required for SQLite + FastAPI threading
 engine = create_engine(
