@@ -5,7 +5,7 @@ from database import engine
 from modules import users
 
 
-models.Base.metadata.drop_all(bind=engine)
+# models.Base.metadata.drop_all(bind=engine)
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
