@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 import models
 from db.session import get_db
-from schemas.users import UserCreate, UserBase
+from schemas.users import UserCreate, UserBase, UserUpdate
 
 router = APIRouter(
     prefix="/users",
@@ -35,7 +35,6 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
-
 
 @router.delete("/{user_id}")
 async def delete_by_user_id(user_id: int, db: Session = Depends(get_db)):
