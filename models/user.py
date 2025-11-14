@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, TIMESTAMP
 from sqlalchemy.dialects import postgresql
+from sqlalchemy.orm import relationship
 
 from database import Base
 
@@ -16,3 +17,5 @@ class User(Base):
     role = Column(postgresql.ENUM('admin', 'user', name='role', create_type=False) )
     created_at = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
     last_login = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
+
+    mapping_template = relationship("MappingTemplate", back_populates="users")
