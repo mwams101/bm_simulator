@@ -8,11 +8,11 @@ from database import Base
 
 
 class FieldMapping(Base):
-    __tablename__ = 'field_mapping'
+    __tablename__ = 'field_mappings'
 
     id = Column(Integer, primary_key=True, index=True)
-    migration_job_id = Column(Integer, ForeignKey('migration_job.id'), nullable=False)
-    mapping_template_id = Column(Integer, ForeignKey('mapping_template.id'), nullable=True)
+    migration_job_id = Column(Integer, ForeignKey('migration_jobs.id'), nullable=False)
+    mapping_template_id = Column(Integer, ForeignKey('mapping_templates.id'), nullable=True)
 
     mapping_rules = Column(Json, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)

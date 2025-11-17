@@ -8,9 +8,9 @@ from database import Base
 
 
 class MigrationJob(Base):
-    __tablename__ = 'migration_job'
+    __tablename__ = 'migration_jobs'
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     job_name = Column(String, nullable=False)
     status = Column(postgresql.ENUM(
