@@ -26,5 +26,5 @@ class MigrationJob(Base):
     error_message = Column(String, nullable=False)
 
     user = relationship("User", back_populates="migration_jobs")
-
     uploaded_file = relationship("UploadedFile", back_populates="migration_jobs")
+    validation_result = relationship("ValidationResult", back_populates="migration_jobs")
