@@ -6,8 +6,10 @@ from database import Base
 
 class SchemaField(Base):
     __tablename__ = 'schema_fields'
+
     id = Column(Integer, primary_key=True, index=True)
     destination_schema_id = Column(Integer, ForeignKey('destination_schemas.id'), nullable=False)
+
     name = Column(String, nullable=False)
     data_type = Column(String, nullable=False)
     is_required = Column(Boolean, nullable=False)

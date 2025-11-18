@@ -1,15 +1,28 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey, DateTime
-from sqlalchemy.dialects import postgresql
+import enum
+
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from database import Base
+
+
+class NewBankCustomerType(enum.Enum):
+    INDIVIDUAL = 'individual'
+    BUSINESS = 'business'
+
+
+class NewBankCustomerStatus(enum.Enum):
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+    SUSPENDED = 'suspended'
 
 
 class NewBankCustomer(Base):
     __tablename__ = "new_bank_customers"
 
     id = Column(Integer, primary_key=True, index=True)
-    migration_job_id = Column(Integer, ForeignKey('job.id'), nullable=True)
+    migration_job_id = Column(Integer, ForeignKey('migration_jobs.id'), nullable=True)
+
     first_name = Column(String, nullable=False, index=True)
     last_name = Column(String, nullable=False, index=True)
     date_of_birth = Column(Date, nullable=False, index=True)
@@ -21,8 +34,10 @@ class NewBankCustomer(Base):
     state = Column(String, nullable=False, index=True)
     postal_code = Column(String, nullable=False, index=True)
     country = Column(String, nullable=False, index=True)
-    customer_type = Column(postgresql.ENUM("individual", "business"), nullable=False, index=True)
-    status = Column(postgresql.ENUM("active", "inactive", "suspend"), nullable=False, index=True)
+
+    customer_type = Column(Enum(NewBankCustomerType), nullable=False, index=True)
+    status = Column(Enum(NewBankCustomerStatus), nullable=False, index=True)
+
     created_at = Column(DateTime, nullable=False, index=True)
     updated_at = Column(DateTime, nullable=False, index=True)
 

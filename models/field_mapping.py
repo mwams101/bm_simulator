@@ -1,7 +1,5 @@
 from datetime import datetime
-
-from pydantic import Json
-from sqlalchemy import Column, Integer, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, DateTime, JSON
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -14,7 +12,7 @@ class FieldMapping(Base):
     migration_job_id = Column(Integer, ForeignKey('migration_jobs.id'), nullable=False)
     mapping_template_id = Column(Integer, ForeignKey('mapping_templates.id'), nullable=True)
 
-    mapping_rules = Column(Json, nullable=False)
+    mapping_rules = Column(JSON, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
