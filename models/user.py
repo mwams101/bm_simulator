@@ -26,4 +26,4 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
     last_login = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
 
-    mapping_template = relationship("MappingTemplate", back_populates="users")
+    # mapping_template = relationship("MappingTemplate", back_populates="users")

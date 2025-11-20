@@ -28,4 +28,4 @@ class MigrationRecord(Base):
     error_message = Column(String, nullable=True)
     migrated_at = Column(DateTime, default=datetime.utcnow)
 
-    migration_job = Relationship('MigrationJob', back_populates='migration_records')
+    # migration_job = Relationship('MigrationJob', back_populates='migration_records')

@@ -35,4 +35,4 @@ class ValidationResult(Base):
 
     validated_at = Column(DateTime(timezone=True), nullable=False)
 
-    migration_job = relationship("MigrationJob", back_populates="validation_results")
+    # migration_job = relationship("MigrationJob", back_populates="validation_results")

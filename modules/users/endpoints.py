@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 import models
 from db.session import get_db
+from modules.security.authenticate import get_password_hash
 from schemas.users import UserCreate, UserBase, UserUpdate
 
 router = APIRouter(
@@ -28,13 +29,26 @@ async def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/")
+@router.post("/", response_model=UserBase)
 async def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    new_user = models.User(**user.model_dump())
+    # Truncate to 72 bytes (not characters) before hashing
+    safe_password = user.password.encode('utf-8')[:72].decode('utf-8', errors='ignore')
+
+    hashed_password = get_password_hash(safe_password)
+
+    new_user = models.User(
+        user_name=user.user_name,
+        email=user.email,
+        password=hashed_password,
+        role=user.role
+    )
+
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
     return new_user
+
 
 @router.delete("/{user_id}")
 async def delete_by_user_id(user_id: int, db: Session = Depends(get_db)):

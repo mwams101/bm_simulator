@@ -36,5 +36,5 @@ class NewBankAccount(Base):
     created_at = Column(DateTime, nullable=False)
     updated_at = Column(DateTime, nullable=False)
 
-    customer = relationship("NewBankCustomer", back_populates="new_bank_accounts")
-    migration_job = relationship("MigrationJob", back_populates="new_bank_accounts")
+    # customer = relationship("NewBankCustomer", back_populates="new_bank_accounts")
+    # migration_job = relationship("MigrationJob", back_populates="new_bank_accounts")

@@ -33,4 +33,4 @@ class MigrationReport(Base):
 
     datetime = Column(DateTime, default=datetime.datetime.utcnow)
 
-    migration_job = Relationship('MigrationJob', back_populates='migration_reports', uselist=False)
+    # migration_job = Relationship('MigrationJob', back_populates='migration_reports', uselist=False)

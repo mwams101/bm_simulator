@@ -34,5 +34,5 @@ class AuditLog(Base):
 
     timestamp = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
 
-    user = relationship("User", back_populates="audit_logs")
-    migration_job = relationship("MigrationJob", back_populates="audit_logs")
+    # user = relationship("User", back_populates="audit_logs")
+    # migration_job = relationship("MigrationJob", back_populates="audit_logs")

@@ -19,4 +19,4 @@ class SchemaField(Base):
     default_value = Column(String, nullable=True)
     field_order = Column(Integer, nullable=True)
 
-    destination_schema = Relationship('DestinationSchema', back_populates='schema_fields')
+    # destination_schema = Relationship('DestinationSchema', back_populates='schema_fields')

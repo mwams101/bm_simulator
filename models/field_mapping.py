@@ -16,5 +16,5 @@ class FieldMapping(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-    migration_job = relationship('MigrationJob', back_populates='field_mappings', uselist=False)
-    mapping_template = relationship('MappingTemplate', back_populates='field_mappings')
+    # migration_job = relationship('MigrationJob', back_populates='field_mappings', uselist=False)
+    # mapping_template = relationship('MappingTemplate', back_populates='field_mappings')

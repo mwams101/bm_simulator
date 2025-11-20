@@ -15,4 +15,4 @@ class FieldMappingDetail(Base):
     transformation_rule = Column(String, nullable=True)
     field_order = Column(Integer, nullable=False)
 
-    field_mapping = Relationship("FieldMapping", back_populates='field_mapping_details')
+    # field_mapping = Relationship("FieldMapping", back_populates='field_mapping_details')

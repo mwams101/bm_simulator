@@ -29,4 +29,4 @@ class UploadedFile(Base):
 
     is_deleted = Column(Boolean, nullable=False, default=False)
 
-    migration_job = relationship("MigrationJob", back_populates="uploaded_files")
+    # migration_job = relationship("MigrationJob", back_populates="uploaded_files")

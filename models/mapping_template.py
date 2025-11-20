@@ -16,4 +16,4 @@ class MappingTemplate(Base):
     created_at = Column(DateTime, index=True, nullable=False)
     is_active = Column(Boolean, index=True, nullable=False)
 
-    user = relationship("User", back_populates="mapping_templates")
+    # user = relationship("User", back_populates="mapping_templates")

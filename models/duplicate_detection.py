@@ -26,4 +26,4 @@ class DuplicateDetection(Base):
 
     detected_at = Column(DateTime, default=datetime.utcnow)
 
-    migration_job = Relationship('MigrationJob', back_populates='duplicate_detections')
+    # migration_job = Relationship('MigrationJob', back_populates='duplicate_detections')

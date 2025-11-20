@@ -15,3 +15,12 @@ class UserCreate(UserBase):
 
 class UserUpdate(UserBase):
     password: Optional[str] = None
+
+
+class UserTokenData(UserBase):
+    user_name: str | None = None
+
+
+class LoginSchema(BaseModel):
+    username: str
+    password: str

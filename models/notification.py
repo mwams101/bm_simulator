@@ -35,5 +35,5 @@ class Notification(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     sent_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-    user = Relationship('User', back_populates='notifications', uselist=False)
-    migration_job = Relationship('MigrationJob', back_populates='notifications')
+    # user = Relationship('User', back_populates='notifications', uselist=False)
+    # migration_job = Relationship('MigrationJob', back_populates='notifications')
