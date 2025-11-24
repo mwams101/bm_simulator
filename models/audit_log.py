@@ -23,7 +23,7 @@ class AuditLog(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    migration_job_id = Column(Integer, ForeignKey('migration_jobs.id'), nullable=False)
+    migration_job_id = Column(Integer, ForeignKey('migration_jobs.id'), nullable=True)
 
     action_type = Column(Enum(AuditLogActionType), nullable=False)
 
