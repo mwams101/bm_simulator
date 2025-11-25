@@ -28,9 +28,9 @@ class AuditLog(Base):
     action_type = Column(Enum(AuditLogActionType), nullable=False)
 
     action_description = Column(String, nullable=False)
-    ip_address = Column(String, nullable=False)
-    request_data = Column(String, nullable=False)
-    response_data = Column(String, nullable=False)
+    ip_address = Column(String, nullable=True)
+    request_data = Column(String, nullable=True)
+    response_data = Column(String, nullable=True)
 
     timestamp = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
 

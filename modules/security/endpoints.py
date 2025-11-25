@@ -2,6 +2,7 @@ from datetime import timedelta
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, HTTPException
 
+import models
 from db.session import get_db
 from models import User
 from modules.security.authenticate import authenticate_user, create_access_token, get_current_active_user
@@ -30,6 +31,16 @@ async def login(payload: LoginSchema, db: Session = Depends(get_db)):
         expires_delta=access_token_expires
     )
 
+    login_in_audit = models.AuditLog(
+        user_id=user.id,
+        action_type="LOGIN",
+        action_description="login"
+    )
+
+    db.add(login_in_audit)
+    db.commit()
+    db.refresh(login_in_audit)
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 
@@ -43,6 +54,6 @@ async def protected_route(current_user: User = Depends(get_current_active_user))
     return {"message": f"Hello {current_user.user_name}, you have access to this protected route!"}
 
 
-@router.get("/")
-async def root():
-    return {"message": "Welcome to FastAPI Authentication Example"}
+@router.post("/logout")
+async def logout():
+    return {"message": "Logged out successfully"}
