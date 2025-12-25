@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 import models
 from db.session import get_db
 from models import User
-from modules.security.authenticate import authenticate_user, create_access_token, get_current_active_user
+from modules.security.auth import authenticate_user, create_access_token, get_current_active_user
 from modules.security.configuration import ACCESS_TOKEN_EXPIRE_MINUTES
 from schemas.users import UserBase, LoginSchema
 

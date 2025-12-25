@@ -1,16 +1,16 @@
 import datetime
 from datetime import timedelta
-from typing import Optional
+from typing import Optional, List
 import jwt
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from db.session import get_db
 from models import User
+from models.user import UserRole
 from modules.security.configuration import SECRET_KEY, ALGORITHM
 from modules.security.hashing import pwd_context
 from modules.security.schemas import oauth2_scheme
-from schemas.users import UserTokenData
 
 
 def verify_password(plain_password, hashed_password):
@@ -73,4 +73,39 @@ async def get_current_user(
 async def get_current_active_user(current_user: User = Depends(get_current_user)):
     if current_user is None:
         raise HTTPException(status_code=400, detail="NO USER")
+    return current_user
+
+
+# Authorization: Role-based access control
+class RoleChecker:
+    def __init__(self, allowed_roles: List[str]):
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, current_user: User = Depends(get_current_active_user)):
+        if current_user.role not in self.allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You don't have permission to access this resource"
+            )
+        return current_user
+
+
+# Convenience functions for common role checks
+def require_admin(current_user: User = Depends(get_current_active_user)):
+    """Dependency to require admin role"""
+    if current_user.role != UserRole.ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin privileges required"
+        )
+    return current_user
+
+
+def require_admin_or_moderator(current_user: User = Depends(get_current_active_user)):
+    """Dependency to require admin or moderator role"""
+    if current_user.role not in [UserRole.ADMIN]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin or moderator privileges required"
+        )
     return current_user
