@@ -29,7 +29,6 @@ async def create_destination_schema(
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 ):
-
     existing_destination_schema = db.query(models.DestinationSchema).filter(
         models.DestinationSchema.schema_name == destination_schema.schema_name
     ).first()
@@ -48,3 +47,43 @@ async def create_destination_schema(
     db.refresh(new_destination_schema)
 
     return new_destination_schema
+
+
+@router.put("/{destination_schema_id}", response_model=DestinationSchemaBase)
+async def update_destination_schema(
+        destination_schema_id: int,
+        destination_schema_update: DestinationSchemaCreate,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(require_admin)
+):
+    destination_schema = db.query(models.DestinationSchema).filter(
+        models.DestinationSchema.id == destination_schema_id).first()
+
+    if not destination_schema:
+        raise HTTPException(status_code=404, detail="Destination schema with the given id does not exist")
+
+    destination_schema.schema_name = destination_schema_update.schema_name
+    destination_schema.description = destination_schema_update.description
+
+    db.commit()
+    db.refresh(destination_schema)
+
+    return destination_schema
+
+
+@router.delete("/{destination_schema_id}")
+async def delete_by_destination_schema_id(
+        destination_schema_id: int,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(require_admin)
+):
+    model_destination_schema = models.DestinationSchema
+    destination_schema = db.query(model_destination_schema).filter(
+        model_destination_schema.id == destination_schema_id).first()
+
+    if not destination_schema:
+        raise HTTPException(status_code=404, detail="destination schema with this id not found")
+
+    db.delete(destination_schema)
+    db.commit()
+    return {"message": "Destination Schema successfully deleted"}

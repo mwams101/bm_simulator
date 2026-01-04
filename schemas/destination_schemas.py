@@ -10,3 +10,4 @@ class DestinationSchemaBase(BaseModel):
 class DestinationSchemaCreate(BaseModel):
     schema_name: str
     description: str
+
