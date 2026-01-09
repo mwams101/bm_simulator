@@ -34,7 +34,7 @@ async def create_destination_schema(
     ).first()
 
     if existing_destination_schema:
-        raise HTTPException(status_code=400, detail="Schema name already exists")
+        raise HTTPException(status_code=400, detail="destination Schema name already exists")
 
     new_destination_schema = models.DestinationSchema(
         created_by=current_user.id,
