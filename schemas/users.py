@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel
@@ -7,9 +8,13 @@ class UserBase(BaseModel):
     user_name: str
     email: str
     role: str
+    last_login: datetime
 
 
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
+    user_name: str
+    email: str
+    role: str
     password: str
 
 

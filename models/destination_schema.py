@@ -20,5 +20,5 @@ class DestinationSchema(Base):
     updated_at = Column(DateTime, default=datetime.utcnow)
 
     # user = Relationship('User', back_populates='destination_schemas', uselist=False)
-    # schema_field = Relationship('SchemaField', back_populates='destination_schemas')
+    schema_fields = Relationship('SchemaField', back_populates='destination_schemas')
 

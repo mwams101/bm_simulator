@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, Boolean
+from datetime import datetime
+
+from sqlalchemy import Column, Integer, ForeignKey, String, Boolean, DateTime
 from sqlalchemy.orm import Relationship
 
 from database import Base
@@ -18,5 +20,7 @@ class SchemaField(Base):
     max_length = Column(Integer, nullable=True)
     default_value = Column(String, nullable=True)
     field_order = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
 
-    # destination_schema = Relationship('DestinationSchema', back_populates='schema_fields')
+    destination_schemas = Relationship('DestinationSchema', back_populates='schema_fields')
