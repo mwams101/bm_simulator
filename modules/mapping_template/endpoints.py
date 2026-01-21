@@ -1,17 +1,19 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import models
 from db.session import get_db
 from modules.security.auth import require_admin
-from schemas.mapping_template import MappingTemplateBase, MappingTemplateCreate, MappingTemplateUpdate
+from schemas.mapping_template import MappingTemplateBase, MappingTemplateCreate
 
 router = APIRouter(
     prefix="/mapping-templates",
     tags=["mapping-templates"]
 )
 
-@router.get("/", response_model=MappingTemplateBase)
+@router.get("/", response_model=List[MappingTemplateBase])
 async def get_mapping_templates(
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
@@ -31,7 +33,7 @@ async def get_mapping_template_by_id(
 
 @router.post("/", response_model=MappingTemplateBase)
 async def create_mapping_template(
-        mapping_template: MappingTemplateBase,
+        mapping_template: MappingTemplateCreate,
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 ):
@@ -55,7 +57,7 @@ async def create_mapping_template(
 @router.put('/{mapping_template_id}', response_model=MappingTemplateBase)
 async def update_mapping_template(
         mapping_template_id: int,
-        mapping_template: MappingTemplateUpdate,
+        mapping_template: MappingTemplateCreate,
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 ):

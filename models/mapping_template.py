@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -13,7 +15,7 @@ class MappingTemplate(Base):
     template_name = Column(String, index=True, nullable=False)
     description = Column(String, index=True, nullable=False)
 
-    created_at = Column(DateTime, index=True, nullable=False)
+    created_at = Column(DateTime, index=True, nullable=False, default=datetime.utcnow)
     is_active = Column(Boolean, index=True, nullable=False)
 
     # user = relationship("User", back_populates="mapping_templates")
