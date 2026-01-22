@@ -57,13 +57,13 @@ async def create_mapping_template(
 @router.put('/{mapping_template_id}', response_model=MappingTemplateBase)
 async def update_mapping_template(
         mapping_template_id: int,
-        mapping_template: MappingTemplateCreate,
+        mapping_template_update: MappingTemplateCreate,
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 ):
-    mapping_template_update = db.query(models.MappingTemplate).filter(models.MappingTemplate.id == mapping_template_id).first()
+    mapping_template = db.query(models.MappingTemplate).filter(models.MappingTemplate.id == mapping_template_id).first()
 
-    if not mapping_template:
+    if not mapping_template_update:
         raise HTTPException(status_code=404, detail="Mapping template with this id not found")
 
     mapping_template.template_name = mapping_template_update.template_name
