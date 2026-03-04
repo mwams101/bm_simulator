@@ -1,4 +1,5 @@
 import enum
+from datetime import datetime
 
 from sqlalchemy import Column, Integer, ForeignKey, DateTime, Enum, String
 from sqlalchemy.orm import relationship
@@ -25,7 +26,7 @@ class MigrationJob(Base):
     name = Column(String, nullable=False)
     status = Column(Enum(JobStatus), nullable=False, default=JobStatus.PENDING)
 
-    created_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     started_at = Column(DateTime, nullable=True)
     completed_at = Column(DateTime, nullable=True)
 
