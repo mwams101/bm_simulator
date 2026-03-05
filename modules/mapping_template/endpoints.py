@@ -63,7 +63,7 @@ async def update_mapping_template(
 ):
     mapping_template = db.query(models.MappingTemplate).filter(models.MappingTemplate.id == mapping_template_id).first()
 
-    if not mapping_template_update:
+    if not mapping_template:
         raise HTTPException(status_code=404, detail="Mapping template with this id not found")
 
     mapping_template.template_name = mapping_template_update.template_name
