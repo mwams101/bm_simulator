@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 import models
 from db.session import get_db
 from modules.security.auth import require_admin
-from schemas.field_mapping import FieldMappingBase, FieldMappingCreate
+from schemas.field_mappings import FieldMappingBase, FieldMappingCreate
 
 router = APIRouter(
     prefix="/field-mappings",

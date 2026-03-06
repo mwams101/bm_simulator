@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 import models
 from db.session import get_db
 from modules.security.auth import require_admin
-from schemas.mapping_template import MappingTemplateBase, MappingTemplateCreate
+from schemas.mapping_templates import MappingTemplateBase, MappingTemplateCreate
 
 router = APIRouter(
     prefix="/mapping-templates",
