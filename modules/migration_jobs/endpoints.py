@@ -3,7 +3,6 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.visitors import replacement_traverse
 
 import models
 from db.session import get_db
@@ -15,32 +14,34 @@ router = APIRouter(
     tags=["migration-jobs"]
 )
 
+
 @router.get("/", response_model=List[MigrationJobsBase])
 async def get_migration_jobs(
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
-
     migration_jobs = db.query(models.MigrationJob).all()
     return migration_jobs
 
-@router.get("/{id}", response_model=MigrationJobsBase)
+
+@router.get("/{migration_job_id}", response_model=MigrationJobsBase)
 async def get_migration_job_by_id(
         migration_job_id: int,
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
-    migration_job = db.query(models.MigrationJob).filter(migration_job_id == models.MigrationJob.id).first()
+    migration_job = db.query(models.MigrationJob).filter(models.MigrationJob.id == migration_job_id).first()
     return migration_job
 
-@router.post("/", response_model=MigrationJobsCreate)
-async def create_migration_job(
-        migration_job: MigrationJobsBase,
-        db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
-):
 
-    existing_migration_job = db.query(models.MigrationJob).filter(migration_job.name == migration_job.name).first()
+@router.post("/", response_model=MigrationJobsBase)
+async def create_migration_job(
+        migration_job: MigrationJobsCreate,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(require_admin)
+):
+    existing_migration_job = db.query(models.MigrationJob).filter(
+        models.MigrationJob.name == migration_job.name).first()
 
     if existing_migration_job:
         raise HTTPException(status_code=400, detail="Migration job with the same name already exists")
@@ -69,9 +70,9 @@ async def update_migration_job(
         migration_job_id: int,
         migration_job: MigrationJobsUpdate,
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
-    existing_migration_job = db.query(models.MigrationJob).filter(migration_job_id == migration_job.id).first()
+    existing_migration_job = db.query(models.MigrationJob).filter(models.MigrationJob.id == migration_job_id).first()
 
     if not existing_migration_job:
         raise HTTPException(status_code=404, detail="Migration job with the given id does not exist")
@@ -92,9 +93,9 @@ async def update_migration_job(
 async def delete_migration_job_by_id(
         migration_job_id: int,
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
-    migration_job = db.query(models.MigrationJob).filter(migration_job_id == models.MigrationJob.id).first()
+    migration_job = db.query(models.MigrationJob).filter(models.MigrationJob.id == migration_job_id).first()
 
     if not migration_job:
         raise HTTPException(status_code=404, detail="Migration job with the given id does not exist")
@@ -102,4 +103,3 @@ async def delete_migration_job_by_id(
     db.delete(migration_job)
     db.commit()
     return {"message": "Migration job successfully deleted"}
-
