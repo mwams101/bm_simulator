@@ -16,7 +16,7 @@ router = APIRouter(
 @router.get("/", response_model=List[FieldMappingBase])
 async def get_field_mappings(
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
     field_mappings = db.query(models.FieldMapping).all()
     return field_mappings
@@ -25,7 +25,7 @@ async def get_field_mappings(
 async def get_field_mapping_by_id(
         field_mapping_id: int,
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
     field_mapping = db.query(models.FieldMapping).filter(field_mapping_id == models.FieldMapping.id).first()
     return field_mapping
@@ -34,7 +34,7 @@ async def get_field_mapping_by_id(
 async def create_field_mapping(
         field_mapping: FieldMappingCreate,
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
     existing_field_mapping = db.query(models.FieldMapping).filter(field_mapping.id == field_mapping.id).first()
     if existing_field_mapping:
@@ -56,7 +56,7 @@ async def update_field_mapping(
         field_mapping_id: int,
         field_mapping: FieldMappingBase,
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
     field_mapping = db.query(models.FieldMapping).filter(field_mapping_id == models.FieldMapping.id).first()
     if not field_mapping:
@@ -71,7 +71,7 @@ async def update_field_mapping(
 async def delete_field_mapping_by_id(
         field_mapping_id: int,
         db: Session = Depends(get_db),
-        current_user: models.User = Depends(require_admin())
+        current_user: models.User = Depends(require_admin)
 ):
     field_mapping = db.query(models.FieldMapping).filter(field_mapping_id == models.FieldMapping.id).first()
     if not field_mapping:
