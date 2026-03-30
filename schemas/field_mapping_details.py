@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class FieldMappingDetails(BaseModel):
+class FieldMappingDetailsBase(BaseModel):
     id: int
     field_mapping_id: int
     source_field: str

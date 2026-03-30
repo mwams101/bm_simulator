@@ -5,9 +5,10 @@ from sqlalchemy.orm import Session
 
 import models
 from db.session import get_db
+from models import FieldMappingDetail
 from modules.security.auth import require_admin
 from schemas.field_mappings import FieldMappingCreate
-from schemas.field_mapping_details import FieldMappingDetails
+from schemas.field_mapping_details import FieldMappingDetailsBase
 
 router = APIRouter(
     prefix="/field-mapping-details",
@@ -15,16 +16,16 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[FieldMappingDetails])
+@router.get("/", response_model=List[FieldMappingDetailsBase])
 async def get_field_mappings_details(
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 ):
     field_mappings_details = db.query(models.FieldMappingDetail).all()
-    return
+    return field_mappings_details
 
 
-@router.get("/{id}", response_model=FieldMappingDetails)
+@router.get("/{field_mapping_details_id}", response_model=FieldMappingDetailsBase)
 async def get_field_mappings_details_by_id(
         field_mapping_details_id: int,
         db: Session = Depends(get_db),
@@ -35,19 +36,14 @@ async def get_field_mappings_details_by_id(
     return field_mappings_details
 
 
-@router.post("/", response_model=FieldMappingDetails)
+@router.post("/", response_model=FieldMappingDetailsBase)
 async def create_field_mappings_details(
         field_mapping_details: FieldMappingCreate,
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 ):
-    existing_field_mapping_details = db.query(models.FieldMappingDetail).filter(
-        field_mapping_details.id == field_mapping_details.id).first()
 
-    if existing_field_mapping_details:
-        raise HTTPException(status_code=400, detail="Field mapping details with this id already exists")
-
-    new_field_mapping_details = FieldMappingDetails(
+    new_field_mapping_details = FieldMappingDetail(
         field_mapping_id=field_mapping_details.field_mapping_id,
         source_field=field_mapping_details.source_field,
         destination_field=field_mapping_details.destination_field,
@@ -62,7 +58,7 @@ async def create_field_mappings_details(
     return new_field_mapping_details
 
 
-@router.put("/{id}", response_model=FieldMappingDetails)
+@router.put("/{field_mapping_details_id}", response_model=FieldMappingDetailsBase)
 async def update_field_mappings_details(
         field_mapping_details_id: int,
         field_mapping_update: FieldMappingCreate,
@@ -86,7 +82,7 @@ async def update_field_mappings_details(
     db.refresh(field_mapping_details)
     return field_mapping_details
 
-@router.delete("/{id}")
+@router.delete("/{field_mapping_details_id}")
 async def delete_field_mappings_details(
         field_mapping_details_id: int,
         db: Session = Depends(get_db),

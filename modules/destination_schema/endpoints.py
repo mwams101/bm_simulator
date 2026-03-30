@@ -22,6 +22,15 @@ async def get_destination_schemas(
     destination_schemas = db.query(models.DestinationSchema).all()
     return destination_schemas
 
+@router.get("/{destination_schema_id}", response_model=DestinationSchemaBase)
+async def get_destination_schema_by_id(
+        destination_schema_id: int,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(require_admin)
+):
+    destination_schema = db.query(models.DestinationSchema).filter(destination_schema_id == models.DestinationSchema.id).first()
+    return destination_schema
+
 
 @router.post("/", response_model=DestinationSchemaBase)
 async def create_destination_schema(

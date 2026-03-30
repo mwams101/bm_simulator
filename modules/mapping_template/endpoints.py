@@ -22,7 +22,7 @@ async def get_mapping_templates(
     mapping_templates = db.query(models.MappingTemplate).all()
     return mapping_templates
 
-@router.get("/{id}", response_model=MappingTemplateBase)
+@router.get("/{mapping_template_id}", response_model=MappingTemplateBase)
 async def get_mapping_template_by_id(
         mapping_template_id: int,
         db: Session = Depends(get_db),
@@ -53,6 +53,8 @@ async def create_mapping_template(
     db.add(new_mapping_template)
     db.commit()
     db.refresh(new_mapping_template)
+
+    return new_mapping_template
 
 @router.put('/{mapping_template_id}', response_model=MappingTemplateBase)
 async def update_mapping_template(

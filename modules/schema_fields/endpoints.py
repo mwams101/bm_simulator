@@ -23,7 +23,7 @@ async def get_schema_fields(
     return schema_fields
 
 
-@router.get("/{id}", response_model=SchemaFieldBase)
+@router.get("/{schema_field_id}", response_model=SchemaFieldBase)
 async def get_schema_field_by_id(
         schema_field_id: int,
         db: Session = Depends(get_db),
@@ -91,7 +91,7 @@ async def update_schema_field(
 
     return schema_field
 
-@router.delete("/{id}")
+@router.delete("/{schema_field_id}")
 async def delete_schema_field_by_id(
         schema_field_id: int,
         db: Session = Depends(get_db),
