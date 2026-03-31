@@ -22,3 +22,5 @@ class UploadedFileCreate(BaseModel):
     file_path: str
     file_type: str
     file_size: int
+
+model_config = {"from_attributes": True}

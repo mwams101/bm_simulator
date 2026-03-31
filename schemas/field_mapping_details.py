@@ -15,3 +15,5 @@ class FieldMappingDetailsCreate(BaseModel):
     destination_field: str
     field_order: int
     transformation_rule: str
+
+model_config = {"from_attributes": True}

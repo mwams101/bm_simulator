@@ -8,7 +8,7 @@ from db.session import get_db
 from models import FieldMappingDetail
 from modules.security.auth import require_admin
 from schemas.field_mappings import FieldMappingCreate
-from schemas.field_mapping_details import FieldMappingDetailsBase
+from schemas.field_mapping_details import FieldMappingDetailsBase, FieldMappingDetailsCreate
 
 router = APIRouter(
     prefix="/field-mapping-details",
@@ -38,7 +38,7 @@ async def get_field_mappings_details_by_id(
 
 @router.post("/", response_model=FieldMappingDetailsBase)
 async def create_field_mappings_details(
-        field_mapping_details: FieldMappingCreate,
+        field_mapping_details: FieldMappingDetailsCreate,
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 ):
@@ -61,7 +61,7 @@ async def create_field_mappings_details(
 @router.put("/{field_mapping_details_id}", response_model=FieldMappingDetailsBase)
 async def update_field_mappings_details(
         field_mapping_details_id: int,
-        field_mapping_update: FieldMappingCreate,
+        field_mapping_update: FieldMappingDetailsCreate,
         db: Session = Depends(get_db),
         current_user: models.User = Depends(require_admin)
 

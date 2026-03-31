@@ -16,3 +16,5 @@ class FieldMappingCreate(BaseModel):
     migration_job_id: int
     mapping_template_id: int
     mapping_rules: Dict[str, Any]
+
+model_config = {"from_attributes": True}

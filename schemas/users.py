@@ -5,10 +5,11 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
+    user_id: int
     user_name: str
     email: str
     role: str
-    last_login: datetime
+    last_login: Optional[datetime]
 
 
 class UserCreate(BaseModel):
@@ -29,3 +30,5 @@ class UserTokenData(UserBase):
 class LoginSchema(BaseModel):
     username: str
     password: str
+
+model_config = {"from_attributes": True}

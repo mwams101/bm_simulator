@@ -11,9 +11,9 @@ class SchemaFieldBase(BaseModel):
     data_type: str
     is_required: bool
     is_unique: bool
-    validation_rule: str
+    validation_rule: Optional[str] = None
     max_length: int
-    default_value: str
+    default_value: Optional[str] = None
     field_order: int
     created_at: datetime
     updated_at: datetime
@@ -29,3 +29,5 @@ class SchemaFieldCreate(BaseModel):
     max_length: int
     default_value: Optional[str] = None
     field_order: int
+
+model_config = {"from_attributes": True}

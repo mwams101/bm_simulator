@@ -16,3 +16,5 @@ class DestinationSchemaCreate(BaseModel):
     schema_name: str
     description: str
 
+model_config = {"from_attributes": True}
+
