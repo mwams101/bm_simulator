@@ -26,4 +26,8 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
     last_login = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
 
-    # mapping_template = relationship("MappingTemplate", back_populates="users")
+    migration_jobs = relationship("MigrationJob", back_populates="user")
+    mapping_templates = relationship("MappingTemplate", back_populates="user")
+    destination_schemas = relationship("DestinationSchema", back_populates="user")
+    notifications = relationship("Notification", back_populates="user")
+    audit_logs = relationship("AuditLog", back_populates="user")

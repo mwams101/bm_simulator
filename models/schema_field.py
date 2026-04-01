@@ -23,4 +23,4 @@ class SchemaField(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-    destination_schemas = Relationship('DestinationSchema', back_populates='schema_fields')
+    destination_schema = Relationship('DestinationSchema', back_populates='schema_fields')
