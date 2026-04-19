@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class DestinationSchemaBase(BaseModel):
     id: int
     created_by: int
+    created_by_name: str = ""
     schema_name: str
     description: str
     created_at: datetime
@@ -16,6 +17,3 @@ class DestinationSchemaBase(BaseModel):
 class DestinationSchemaCreate(BaseModel):
     schema_name: str
     description: str
-
-
-

@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class MappingTemplateBase(BaseModel):
     id: int
     user_id: int
+    user_name: str = ""
     template_name: str
     description: str
     created_at: datetime

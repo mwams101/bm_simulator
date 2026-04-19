@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Relationship
 
 from database import Base
@@ -21,4 +22,8 @@ class DestinationSchema(Base):
 
     user = Relationship('User', back_populates='destination_schemas')
     schema_fields = Relationship('SchemaField', back_populates='destination_schema')
+
+    @hybrid_property
+    def created_by_name(self):
+        return self.user.user_name if self.user else ""
 

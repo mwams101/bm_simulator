@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -20,3 +21,7 @@ class MappingTemplate(Base):
 
     user = relationship("User", back_populates="mapping_templates")
     field_mappings = relationship("FieldMapping", back_populates="mapping_template")
+
+    @hybrid_property
+    def user_name(self):
+        return self.user.user_name if self.user else ""
