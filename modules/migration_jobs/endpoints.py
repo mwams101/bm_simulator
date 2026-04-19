@@ -8,6 +8,7 @@ import models
 from db.session import get_db
 from modules.security.auth import require_admin
 from schemas.migration_jobs import MigrationJobsBase, MigrationJobsCreate, MigrationJobsUpdate
+from services import mapping_service
 
 router = APIRouter(
     prefix="/migration-jobs",
@@ -87,6 +88,15 @@ async def update_migration_job(
     db.commit()
     db.refresh(existing_migration_job)
     return existing_migration_job
+
+
+@router.post("/{migration_job_id}/start-mapping")
+async def start_mapping(
+        migration_job_id: int,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(require_admin)
+):
+    return mapping_service.run(job_id=migration_job_id, db=db)
 
 
 @router.delete("/{migration_job_id}")

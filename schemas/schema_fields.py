@@ -18,6 +18,8 @@ class SchemaFieldBase(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+    model_config = {"from_attributes": True}
+
 
 class SchemaFieldCreate(BaseModel):
     destination_schema_id: int
@@ -30,4 +32,3 @@ class SchemaFieldCreate(BaseModel):
     default_value: Optional[str] = None
     field_order: int
 
-model_config = {"from_attributes": True}

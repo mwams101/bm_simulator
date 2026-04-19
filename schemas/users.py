@@ -11,6 +11,8 @@ class UserBase(BaseModel):
     role: str
     last_login: Optional[datetime]
 
+    model_config = {"from_attributes": True}
+
 
 class UserCreate(BaseModel):
     user_name: str
@@ -31,4 +33,4 @@ class LoginSchema(BaseModel):
     username: str
     password: str
 
-model_config = {"from_attributes": True}
+

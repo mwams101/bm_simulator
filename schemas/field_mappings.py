@@ -12,9 +12,10 @@ class FieldMappingBase(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+    model_config = {"from_attributes": True}
+
 class FieldMappingCreate(BaseModel):
     migration_job_id: int
     mapping_template_id: int
     mapping_rules: Dict[str, Any]
 
-model_config = {"from_attributes": True}

@@ -8,8 +8,7 @@ from modules import users, security, destination_schema, schema_fields, mapping_
     field_mapping_details, uploaded_files, migration_jobs, migration_record, validation_result, \
     duplicate_detection, migration_report, notification, audit_log, new_bank_customer, new_bank_account
 
-# models.Base.metadata.drop_all(bind=engine)
-models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 

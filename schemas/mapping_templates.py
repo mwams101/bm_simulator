@@ -11,7 +11,7 @@ class MappingTemplateBase(BaseModel):
     created_at: datetime
     is_active: bool
 
-
+    model_config = {"from_attributes": True}
 
 class MappingTemplateCreate(BaseModel):
     template_name: str
@@ -19,7 +19,7 @@ class MappingTemplateCreate(BaseModel):
     is_active: bool
 
 
-model_config = {"from_attributes": True}
+
 
 
 

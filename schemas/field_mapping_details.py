@@ -9,6 +9,8 @@ class FieldMappingDetailsBase(BaseModel):
     field_order: int
     transformation_rule: str
 
+    model_config = {"from_attributes": True}
+
 class FieldMappingDetailsCreate(BaseModel):
     field_mapping_id: int
     source_field: str
@@ -16,4 +18,3 @@ class FieldMappingDetailsCreate(BaseModel):
     field_order: int
     transformation_rule: str
 
-model_config = {"from_attributes": True}

@@ -11,10 +11,11 @@ class DestinationSchemaBase(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+    model_config = {"from_attributes": True}
 
 class DestinationSchemaCreate(BaseModel):
     schema_name: str
     description: str
 
-model_config = {"from_attributes": True}
+
 

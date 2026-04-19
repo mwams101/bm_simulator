@@ -15,6 +15,8 @@ class UploadedFilesBase(BaseModel):
     expiry_timestamp: datetime
     is_deleted: bool
 
+    model_config = {"from_attributes": True}
+
 class UploadedFileCreate(BaseModel):
     migration_job_id: int
     original_filename: str
@@ -23,4 +25,3 @@ class UploadedFileCreate(BaseModel):
     file_type: str
     file_size: int
 
-model_config = {"from_attributes": True}

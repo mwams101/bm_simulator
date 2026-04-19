@@ -9,6 +9,7 @@ from database import Base
 
 
 class MigrationRecordStatus(enum.Enum):
+    PENDING = 'pending'
     SUCCESS = 'success'
     FAILED = 'failed'
     SKIPPED = 'skipped'
