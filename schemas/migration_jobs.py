@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class MigrationJobsBase(BaseModel):
     id: int
     user_id: int
+    destination_schema_id: Optional[int] = None
     name: str
     status: str
     created_at: datetime
@@ -22,6 +23,7 @@ class MigrationJobsBase(BaseModel):
 
 class MigrationJobsCreate(BaseModel):
     name: str
+    destination_schema_id: Optional[int] = None
     status: str
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None

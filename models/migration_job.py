@@ -22,6 +22,7 @@ class MigrationJob(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    destination_schema_id = Column(Integer, ForeignKey('destination_schemas.id'), nullable=True)
 
     name = Column(String, nullable=False)
     status = Column(Enum(JobStatus), nullable=False, default=JobStatus.PENDING)
@@ -36,6 +37,7 @@ class MigrationJob(Base):
     error_message = Column(String, nullable=True)
 
     user = relationship("User", back_populates="migration_jobs")
+    destination_schema = relationship("DestinationSchema")
     uploaded_files = relationship("UploadedFile", back_populates="migration_job")
     field_mappings = relationship("FieldMapping", back_populates="migration_job")
     migration_records = relationship("MigrationRecord", back_populates="migration_job")

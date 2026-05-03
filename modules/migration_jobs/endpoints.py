@@ -8,7 +8,7 @@ import models
 from db.session import get_db
 from modules.security.auth import require_admin
 from schemas.migration_jobs import MigrationJobsBase, MigrationJobsCreate, MigrationJobsUpdate
-from services import mapping_service
+from services import mapping_service, validation_service
 
 router = APIRouter(
     prefix="/migration-jobs",
@@ -49,6 +49,7 @@ async def create_migration_job(
 
     new_migration_job = models.MigrationJob(
         user_id=current_user.id,
+        destination_schema_id=migration_job.destination_schema_id,
         name=migration_job.name,
         status=migration_job.status,
         started_at=migration_job.started_at,
@@ -97,6 +98,15 @@ async def start_mapping(
         current_user: models.User = Depends(require_admin)
 ):
     return mapping_service.run(job_id=migration_job_id, db=db)
+
+
+@router.post("/{migration_job_id}/start-validation")
+async def start_validation(
+        migration_job_id: int,
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(require_admin)
+):
+    return validation_service.run(job_id=migration_job_id, db=db)
 
 
 @router.delete("/{migration_job_id}")
