@@ -17,11 +17,4 @@ class UploadedFilesBase(BaseModel):
 
     model_config = {"from_attributes": True}
 
-class UploadedFileCreate(BaseModel):
-    migration_job_id: int
-    original_filename: str
-    uploaded_filename: str
-    file_path: str
-    file_type: str
-    file_size: int
 

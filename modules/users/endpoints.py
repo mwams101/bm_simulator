@@ -47,13 +47,13 @@ async def get_user_by_id(
 ):
     """Users can view their own profile, admins can view any profile"""
     model_user = models.User
-    user = db.query(model_user).filter(model_user.user_id == user_id).first()
+    user = db.query(model_user).filter(model_user.id == user_id).first()
 
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
     # Check if user is admin or viewing their own profile
-    if current_user.role != "admin" and current_user.user_id != user_id:
+    if current_user.role != "admin" and current_user.id != user_id:
         raise HTTPException(
             status_code=403,
             detail="You can only view your own profile"
@@ -109,12 +109,12 @@ async def delete_by_user_id(
         current_user: models.User = Depends(require_admin)
 ):
     model_user = models.User
-    user = db.query(model_user).filter(model_user.user_id == user_id).first()
+    user = db.query(model_user).filter(model_user.id == user_id).first()
 
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    if user.user_id == current_user.user_id:
+    if user.id == current_user.id:
         raise HTTPException(
             status_code=400,
             detail="Cannot delete your own account"
@@ -134,13 +134,13 @@ async def update_user(
         current_user: models.User = Depends(get_current_active_user)
 ):
     """Users can update their own profile, admins can update any profile"""
-    user = db.query(models.User).filter(models.User.user_id == user_id).first()
+    user = db.query(models.User).filter(models.User.id == user_id).first()
 
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
     # Check permissions
-    if current_user.role != "admin" and current_user.user_id != user_id:
+    if current_user.role != "admin" and current_user.id != user_id:
         raise HTTPException(
             status_code=403,
             detail="You can only update your own profile"
