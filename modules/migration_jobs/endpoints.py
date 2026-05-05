@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 
@@ -8,7 +8,8 @@ import models
 from db.session import get_db
 from modules.security.auth import require_admin
 from schemas.migration_jobs import MigrationJobsBase, MigrationJobsCreate, MigrationJobsUpdate
-from services import mapping_service, validation_service, execution_service
+from models.migration_report import MigrationReportType, MigrationReportFormat
+from services import mapping_service, validation_service, execution_service, report_service
 
 router = APIRouter(
     prefix="/migration-jobs",
@@ -116,6 +117,22 @@ async def start_execution(
         current_user: models.User = Depends(require_admin)
 ):
     return execution_service.run(job_id=migration_job_id, db=db)
+
+
+@router.post("/{migration_job_id}/generate-report")
+async def generate_report(
+        migration_job_id: int,
+        report_type: MigrationReportType = Query(default=MigrationReportType.SUMMARY),
+        report_format: MigrationReportFormat = Query(default=MigrationReportFormat.JSON),
+        db: Session = Depends(get_db),
+        current_user: models.User = Depends(require_admin)
+):
+    return report_service.run(
+        job_id=migration_job_id,
+        db=db,
+        report_type=report_type,
+        report_format=report_format,
+    )
 
 
 @router.delete("/{migration_job_id}")
