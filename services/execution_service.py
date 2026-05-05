@@ -106,19 +106,41 @@ def _to_enum(enum_class, value, field_name: str):
 # ---------------------------------------------------------------------------
 
 def _build_customer(data: dict, job_id: int, now: datetime) -> NewBankCustomer:
+    # Validate required non-nullable fields in Python before touching the DB.
+    # This produces a clear ValueError caught by the per-record savepoint instead
+    # of a sqlite3.IntegrityError that escapes the savepoint and kills the job.
+    required = {
+        "first_name": data.get("first_name"),
+        "last_name": data.get("last_name"),
+        "date_of_birth": data.get("date_of_birth"),
+        "email": data.get("email"),
+        "phone_masked": data.get("phone_masked"),
+        "address_line_1": data.get("address_line_1"),
+        "city": data.get("city"),
+        "state": data.get("state"),
+        "postal_code": data.get("postal_code"),
+        "country": data.get("country"),
+    }
+    missing = [k for k, v in required.items() if v in (None, "")]
+    if missing:
+        raise ValueError(
+            f"Missing required customer field(s): {', '.join(missing)}. "
+            f"Check that your field mapping details include source fields for these columns."
+        )
+
     return NewBankCustomer(
         migration_job_id=job_id,
-        first_name=data.get("first_name") or "",
-        last_name=data.get("last_name") or "",
-        date_of_birth=_to_date(data.get("date_of_birth")),
-        email=data.get("email") or "",
-        phone_masked=data.get("phone_masked") or "",
-        address_line_1=data.get("address_line_1") or "",
+        first_name=data["first_name"],
+        last_name=data["last_name"],
+        date_of_birth=_to_date(data["date_of_birth"]),
+        email=data["email"],
+        phone_masked=data["phone_masked"],
+        address_line_1=data["address_line_1"],
         address_line_2=data.get("address_line_2") or "",
-        city=data.get("city") or "",
-        state=data.get("state") or "",
-        postal_code=data.get("postal_code") or "",
-        country=data.get("country") or "",
+        city=data["city"],
+        state=data["state"],
+        postal_code=data["postal_code"],
+        country=data["country"],
         customer_type=_to_enum(
             NewBankCustomerType,
             data.get("customer_type", "individual"),
@@ -135,10 +157,21 @@ def _build_customer(data: dict, job_id: int, now: datetime) -> NewBankCustomer:
 
 
 def _build_account(data: dict, customer_id: int, job_id: int, now: datetime) -> NewBankAccount:
+    required = {
+        "account_number": data.get("account_number"),
+        "account_open_date": data.get("account_open_date"),
+    }
+    missing = [k for k, v in required.items() if v in (None, "")]
+    if missing:
+        raise ValueError(
+            f"Missing required account field(s): {', '.join(missing)}. "
+            f"Check that your field mapping details include source fields for these columns."
+        )
+
     return NewBankAccount(
         customer_id=customer_id,
         migration_job_id=job_id,
-        account_number=_to_int(data.get("account_number")),
+        account_number=_to_int(data["account_number"]),
         account_type=_to_enum(
             NewBankAccountAccountType,
             data.get("account_type", "savings"),
@@ -146,7 +179,7 @@ def _build_account(data: dict, customer_id: int, job_id: int, now: datetime) -> 
         ),
         balance=_to_float(data.get("balance", 0)),
         currency=data.get("currency") or "USD",
-        account_open_date=_to_date(data.get("account_open_date")),
+        account_open_date=_to_date(data["account_open_date"]),
         status=_to_enum(
             NewBankAccountAccountStatus,
             data.get("account_status", "active"),
