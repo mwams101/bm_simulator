@@ -81,6 +81,7 @@ async def update_migration_job(
         raise HTTPException(status_code=404, detail="Migration job with the given id does not exist")
 
     existing_migration_job.name = migration_job.name
+    existing_migration_job.destination_schema_id = migration_job.destination_schema_id
     existing_migration_job.status = migration_job.status
     existing_migration_job.total_records = migration_job.total_records
     existing_migration_job.successful_records = migration_job.successful_records

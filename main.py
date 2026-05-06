@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
 import models
@@ -11,6 +12,16 @@ from modules import users, security, destination_schema, schema_fields, mapping_
 
 
 app = FastAPI()
+
+# Ensure CORS headers are present even on unhandled 500 errors.
+# Without this, Starlette's ServerErrorMiddleware returns the error response
+# before CORSMiddleware can attach the Allow-Origin header.
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={"detail": f"Internal server error: {str(exc)}"},
+    )
 
 app.include_router(users.router)
 app.include_router(security.router)

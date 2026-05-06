@@ -35,6 +35,7 @@ class MigrationJobsCreate(BaseModel):
 
 class MigrationJobsUpdate(BaseModel):
     name: str
+    destination_schema_id: Optional[int] = None
     status: str
     total_records: int
     successful_records: int
